@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b0d12">
+    <meta name="description" content="VaultX is a personal encrypted password vault that keeps its data in your browser.">
+    <meta name="referrer" content="no-referrer">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self'">
+    <title>VaultX — Personal Password Vault</title>
+    <link rel="stylesheet" href="./style.css">
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="screen lock-screen" id="lock-screen" aria-labelledby="brand-title">
+        <div class="brand-mark" aria-hidden="true">V</div>
+        <p class="eyebrow">PERSONAL ENCRYPTED VAULT</p>
+        <h1 id="brand-title">VAULTX</h1>
+        <p class="subtitle">Your personal password vault</p>
+
+        <form id="unlock-form" class="panel" autocomplete="off">
+          <label for="master-password" id="master-password-label">Master password</label>
+          <div class="input-with-action">
+            <input id="master-password" name="master-password" type="password" autocomplete="current-password" required>
+            <button class="icon-button" type="button" id="toggle-master-password" aria-label="Show master password" aria-pressed="false">◉</button>
+          </div>
+          <button class="primary-button full-width" type="submit" id="unlock-button">Unlock vault</button>
+          <p class="form-message" id="lock-message" role="status" aria-live="polite">Your encrypted vault stays on this device unless you export it.</p>
+        </form>
+
+        <div class="vault-file-actions" aria-label="Vault file options">
+          <button class="text-button" type="button" id="create-vault-button">Create a new vault</button>
+          <label class="text-button file-picker-label" for="import-vault-file">Import encrypted vault</label>
+          <input class="visually-hidden" id="import-vault-file" type="file" accept=".vaultx,application/json">
+        </div>
+        <p class="security-note">Never enter your master password on a device you do not trust.</p>
+      </section>
+
+      <section class="screen dashboard-screen hidden" id="dashboard-screen" aria-labelledby="dashboard-title" inert>
+        <header class="topbar">
+          <a class="wordmark" href="./" aria-label="VaultX home"><span class="mini-mark" aria-hidden="true">V</span> VAULTX</a>
+          <button class="secondary-button" type="button" id="lock-now-button">Lock now</button>
+        </header>
+
+        <div class="dashboard-heading">
+          <div>
+            <p class="eyebrow">YOUR PRIVATE SPACE</p>
+            <h2 id="dashboard-title">Your vault</h2>
+            <p class="subtitle">Your accounts are encrypted before they are saved.</p>
+          </div>
+          <button class="primary-button add-account-button" type="button" id="add-account-button">＋ <span>Add account</span></button>
+        </div>
+
+        <div class="toolbar">
+          <label class="search-box" for="account-search">
+            <span aria-hidden="true">⌕</span>
+            <input id="account-search" type="search" placeholder="Search accounts…" autocomplete="off">
+          </label>
+          <button class="secondary-button" type="button" id="export-vault-button">Export backup</button>
+        </div>
+
+        <p class="dashboard-message" id="dashboard-message" role="status" aria-live="polite"></p>
+        <div class="account-list" id="account-list" aria-live="polite"></div>
+        <div class="empty-state" id="empty-state">
+          <div class="empty-icon" aria-hidden="true">◇</div>
+          <h3>Your vault is ready for its first account</h3>
+          <p>Add an account to keep its details encrypted in your vault.</p>
+          <button class="secondary-button" type="button" id="empty-add-account-button">Add your first account</button>
+        </div>
+
+        <footer class="dashboard-footer"><span>Vault data is stored locally in encrypted form.</span><span>Auto-lock after 2 minutes of inactivity</span></footer>
+      </section>
+    </main>
+
+    <dialog class="account-dialog" id="account-dialog" aria-labelledby="account-dialog-title">
+      <form id="account-form" method="dialog">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">VAULT ENTRY</p>
+            <h2 id="account-dialog-title">Add account</h2>
+          </div>
+          <button class="icon-button close-dialog-button" type="button" id="close-account-dialog" aria-label="Close form">×</button>
+        </div>
+        <input type="hidden" id="account-id">
+        <label for="platform">Platform</label>
+        <input id="platform" name="platform" type="text" maxlength="100" required autocomplete="organization">
+        <label for="username">Account ID / Username</label>
+        <input id="username" name="username" type="text" maxlength="200" autocomplete="username">
+        <label for="account-password">Password</label>
+        <div class="input-with-action">
+          <input id="account-password" name="password" type="password" maxlength="1024" autocomplete="new-password">
+          <button class="icon-button" type="button" id="toggle-account-password" aria-label="Show password" aria-pressed="false">◉</button>
+        </div>
+        <div class="field-actions"><button class="text-button" type="button" id="generate-password-button">Generate strong password</button></div>
+        <label for="website-url">Website URL</label>
+        <input id="website-url" name="website" type="url" maxlength="2048" inputmode="url" placeholder="https://example.com" autocomplete="url">
+        <label for="account-notes">Notes <span class="optional">(optional)</span></label>
+        <textarea id="account-notes" name="notes" rows="3" maxlength="2000"></textarea>
+        <p class="form-message" id="account-form-message" role="status" aria-live="polite"></p>
+        <div class="dialog-actions">
+          <button class="secondary-button" type="button" id="cancel-account-button">Cancel</button>
+          <button class="primary-button" type="submit" id="save-account-button">Encrypt and save</button>
+        </div>
+      </form>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
